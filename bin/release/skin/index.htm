@@ -1,0 +1,200 @@
+<html>
+    <head>
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title><yana-vocal-entity></title>
+    </head>
+    <body>
+      <div class="wrapper">
+                    <div class='header'>
+                        <div id='logo' class='logo' style='background:url("img/logo.png") no-repeat;'>
+                            <div id='version'><yana-version></div>
+                        </div>
+                         <ul class="toolbar">
+                          <li onclick="page('index');" title="configuration"><i class="fa fa-home"></i></li>
+                          <li onclick="page('configuration');" title="configuration"><i class="fa fa-cog"></i></li>
+                          <li onclick="page('command');" title="Liste des commandes"><i class="fa fa-comments-o"></i></li>
+                          <li onclick="page('debug');" title='Debug/Historique' ><i class="fa fa-bug"></i></li>
+                          <li onclick="page('about');" title='A propos' id='aboutButton'><i class="fa fa-question-circle"></i></li>
+                          <li onclick="yana.maximize();"><i class="fa fa-expand"></i></li>
+                          <li onclick="yana.minimize();"><i class="fa fa-minus"></i></li>
+                          <li onclick="yana.hide();"><i class="fa fa-times"></i></li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div id='content' class='content'>
+                      <div id="notice"></div>
+                      <div id="error"></div>
+                      <!-- PAGE A propos -->
+                      <div class="pages" id="about">
+                        <h1>A propos</h1>
+                        <br/>
+                        <p>Programme conçu et réalisé par Valentin CARRUESCO aka Idleman.</p>
+                        <ul>
+                          <li><strong>Contact:</strong> idleman@idleman.fr</li>
+                          <li><strong>Page projet:</strong> http://projet.idleman.fr/yana</li>
+                          <li><strong>Github:</strong> http://github.ldleman.com/yana-server</li>
+                          <li><strong>Licence:</strong> CC -by -nc -sa</li>
+                          <li><strong>Version:</strong> <yana-version></li>
+                        </ul>
+                      </div>
+                      <!-- PAGE COMMANDES VOCALES -->
+                      <div class="pages" id="command">
+                        <h1>Commandes disponibles</h1>
+                        <div id="commandList"></div>
+                      </div>
+                        <!-- PAGE DEBUG -->
+                      <div class="pages" id="debug">
+                        <h1>Débug</h1>
+                        <ul id="debugList"></ul>
+                      </div>
+                      <!-- PAGE CONFIGURATION -->
+                        <div class="pages" id="configuration">
+                          
+                          <ul class="fieldGroup">
+                            <li><h1>Général</h1></li>
+                            <li><label for="serverAdress">Adresse YANA</label> <input id="serverAdress" value="" type="text"> <small>ex: http://ip/du/rpi/yana-server</small></li>
+                            <li><label for="token">Token</label> <input id="token" value="" type="text"> <small>ex: 82baad20ddc01d630fe35c83w75c1c01287b0a14</small></li>
+                            <li><label for="launchAtStartup">Lancer au démarrage</label> <input id="launchAtStartup" type="checkbox"></li>
+                            <li><label for="vocalEntityName">Nom de l'entité</label> <input id="vocalEntityName" value="" type="text"> <small>ex: Yana</small></li>
+                          </ul>
+                           <ul class="fieldGroup">
+                            <li><h1>Proxy</h1></li>
+                            <li><p>Si vous passsez par un proxy, merci de renseigner les informations ci dessous</p></li>
+                            <li><label for="useProxy">Passer par un proxy</label> <input id="useProxy" type="checkbox"/></li>
+                            <li><label for="proxyAdress">Adresse/IP</label> <input id="proxyAdress" value="" type="text"> <small>ex: mon.proxy.com</small></li>
+                            <li><label for="proxyPort">Port</label> <input id="proxyPort" value="" type="text"> <small>ex: 8080</small></li>
+                            <li><label for="proxyLogin">Login</label> <input id="proxyLogin" value="" type="text"> <small>laisser vide si pas de login</small></li>
+                            <li><label for="proxyPassword">Pasword</label> <input id="proxyPassword" value="" type="text"> <small>laisser vide si pas de mdp</small></li>
+                          </ul>
+                          <div onclick="saveConfig();" class="btn">Enregistrer</div>
+                        </div>
+
+                      <!-- PAGE INDEX -->
+                        <div class="pages" id="index">
+                          <div class='urlInfo'>
+                          <img src='img/ip_adress.png'>
+                          <h1><yana-ip></h1>
+                          </div>
+                          <div style='clear:both;'></div>
+                          <div id='commands'></div>
+                          <div id='messages'>  
+                              <div id="messageResponse" class='messageContainer'>
+                                  <img class='messageResponse' src='img/reponse.png'/>
+                                  <div class='messageContent'>
+                                    <i></i> <span class='message'></span>
+                                  </div>
+                                  <div style='clear:both;'></div>
+                              </div>
+
+                              <div id="messageQuestion" class='messageContainer'>
+                                  <img class='messageQuestion' style='float:right;margin:3px 0 0 0;' src='img/envoi.png'/>
+                                  <div class='messageContent' style='background-color:#DEF1FA;margin:0px;float:right;'>
+                                    <i></i><span class='message'></span>
+                                  </div>
+                                  <div style='clear:both;'></div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                     <div class='footer'>
+                       <p>
+                        By Idleman - 
+                        <img title='Programme sous licence CC by nc sa' onclick='window.open(""http://creativecommons.org/licenses/by-nc-sa/2.0/fr/"");' id='licenceButton' class='licenceButton' border='0' title='A propos' src='img\ccbyncsa.png'>
+                        </p>
+                    </div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script>
+        if(typeof yana != 'undefined'){
+
+
+
+            function saveConfig(){
+              yana.config('API_URL',$('#serverAdress').val());
+              yana.config('VOCAL_ENTITY_NAME',$('#serverAdress').val());
+
+             
+
+              yana.config('LAUNCH_AT_STARTUP',$('#launchAtStartup').prop('checked')?1:0);
+              yana.config('TOKEN',$('#token').val());
+              yana.config('VOCAL_ENTITY_NAME',$('#vocalEntityName').val());
+
+              yana.config('USE_PROXY',$('#useProxy').prop('checked')?1:0);
+              yana.config('PROXY_PORT',$('#proxyAdress').val());
+              yana.config('PROXY_HOST',$('#proxyPort').val());
+              yana.config('PROXY_LOGIN',$('#proxyLogin').val());
+              yana.config('PROXY_PASSWORD',$('#proxyPassword').val());
+
+              info('Configuration enregistrée');
+            }
+            function info(message){
+              $('#notice').html(message).fadeIn();
+              setTimeout(function(){
+                  $('#notice').fadeOut();
+              },3000);
+            }
+             function error(message){
+              $('#error').html(message).fadeIn();
+              setTimeout(function(){
+                  $('#error').fadeOut();
+              },3000);
+            }
+            function commandLoaded(){
+              var commands = yana.commands();
+
+              commands = JSON.parse(commands);
+          
+              html = '<ul>';
+
+              for(var key in commands.commands){
+                var command = commands.commands[key];
+                 html += '<li>'+command.command+' <span title="Seuil à dépasser pour que la phrase soit reconnue">'+command.confidence+'</span> ';
+                 if(command.url !=null) html += '<i title="'+command.url+'" onclick="yana.url(\''+command.url+'\')" class="fa fa-globe"></i></a>';
+                 html += '</li>';
+              }
+
+               html += '</ul>';
+
+              $('#commandList').html(html);
+            }
+
+            function configurationLoaded(){
+                            $('#serverAdress').val(yana.config('API_URL'));
+              $('#vocalEntityName').val(yana.config('VOCAL_ENTITY_NAME'));
+
+              $('#useProxy').prop('checked',yana.config('USE_PROXY') == '1' ?true:false);
+              $('#proxyAdress').val(yana.config('PROXY_PORT'));
+              $('#proxyPort').val(yana.config('PROXY_HOST'));
+              $('#proxyLogin').val(yana.config('PROXY_LOGIN'));
+              $('#proxyPassword').val(yana.config('PROXY_PASSWORD'));
+
+
+              $('#token').val(yana.config('TOKEN'));
+
+              $('#launchAtStartup').prop('checked',yana.config('LAUNCH_AT_STARTUP') == '1' ?true:false);
+            }
+
+            function page(page){
+              $('.pages').hide();$('#'+page).fadeIn();
+              eval(page+'Loaded()');
+            }
+
+
+            $('.header').mousedown(function(){
+              yana.dragStart();
+               $('.header').mouseup(function(){
+                yana.dragStop();
+              });
+            });
+            
+            $(document).mousemove(function(event){
+              yana.dragMove(event.pageX,event.pageY);
+            });
+        }
+  </script>
+     </body>
+</html>

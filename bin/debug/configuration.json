@@ -1,0 +1,1 @@
+{ "API_URL" : "http://127.0.0.1/yana-server", "COMMAND_ACTION" : "action.php?action=GET_SPEECH_COMMAND", "LAUNCH_AT_STARTUP" : "1", "PROXY_HOST" : "zef", "PROXY_LOGIN" : "zezeffze", "PROXY_PASSWORD" : "zezfe", "PROXY_PORT" : "80", "TOKEN" : "3046eabd4be83940d8e237bf55a5478d6f3b0453", "USE_PROXY" : "0", "VOCAL_ENTITY_NAME" : "Yana" }

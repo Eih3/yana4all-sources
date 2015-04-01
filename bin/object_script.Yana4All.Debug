@@ -1,0 +1,16 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\functions.o
+./debug\file.o
+./debug\json.o
+./debug\configuration.o
+./debug\mainicon.o
+./debug\speak.o
+./debug\server.o
+./debug\listen.o
+./debug\log.o
+./debug\moc_mainwindow.o
+./debug\moc_speak.o
+./debug\moc_server.o
+);

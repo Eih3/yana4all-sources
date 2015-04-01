@@ -1,0 +1,16 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\functions.o
+./release\file.o
+./release\json.o
+./release\configuration.o
+./release\mainicon.o
+./release\speak.o
+./release\server.o
+./release\listen.o
+./release\log.o
+./release\moc_mainwindow.o
+./release\moc_speak.o
+./release\moc_server.o
+);
